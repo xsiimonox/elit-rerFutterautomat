@@ -89,16 +89,16 @@ pio device monitor
 
 | Funktion | ESP32 Pin |
 |---|---:|
-| Pumpe Enable/PWM | GPIO25 |
-| Pumpe IN1 | GPIO26 |
-| Pumpe IN2 | GPIO27 |
-| Ruehrmotor Enable/PWM | GPIO14 |
-| Ruehrmotor IN1 | GPIO33 |
-| Ruehrmotor IN2 | GPIO32 |
+| Pumpen-H-Bruecke EN/PWM | GPIO25 |
+| Pumpen-H-Bruecke IN1 | GPIO26 |
+| Pumpen-H-Bruecke IN2 | GPIO27 |
+| Ruehrmotor-H-Bruecke EN/PWM | GPIO14 |
+| Ruehrmotor-H-Bruecke IN1 | GPIO33 |
+| Ruehrmotor-H-Bruecke IN2 | GPIO32 |
 | WS2812 8x8 Datenleitung | GPIO4 |
 | Gemeinsame Masse | GND |
 
-Motoren und LED-Matrix brauchen eine passende externe Stromversorgung. Alle GNDs muessen verbunden sein.
+Die beiden Motoren sind 2-polige DC-Motoren und werden ueber H-Bruecken an OUT1/OUT2 angeschlossen. Motoren und LED-Matrix brauchen eine passende externe Stromversorgung. Alle GNDs muessen verbunden sein.
 
 ## Lokaler Node-Mock
 

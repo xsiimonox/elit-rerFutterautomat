@@ -15,7 +15,7 @@
 
     <section class="doc-card">
       <h2>Verdrahtung</h2>
-      <img class="doc-img" src="assets/wiring.svg" alt="Verdrahtung ESP32, Motortreiber, Pumpe, Ruehrmotor und WS2812 Matrix">
+      <img class="doc-img" src="assets/wiring.svg" alt="Verdrahtung ESP32, H-Bruecken, 2-polige DC-Motoren und WS2812 Matrix">
     </section>
 
     <section class="doc-card">
@@ -45,9 +45,9 @@
       <h2>Bauteile</h2>
       <ul>
         <li>ESP32-WROOM-32E Dev Board</li>
-        <li>Peristaltikpumpe mit DC-Motor</li>
-        <li>DC-Ruehrmotor</li>
-        <li>2 Motortreiber-Kanaele, z. B. TB6612FNG, L298N oder DRV8833</li>
+        <li>Peristaltikpumpe mit 2-poligem DC-Motor</li>
+        <li>2-poliger DC-Ruehrmotor</li>
+        <li>2 H-Bruecken-Kanaele, z. B. TB6612FNG, L298N oder DRV8833</li>
         <li>8x8 WS2812 LED-Matrix mit 64 LEDs</li>
         <li>Externes Netzteil passend zu Motoren und LED-Matrix</li>
         <li>Schlaeuche, Rueckschlagventil und gemeinsamer GND</li>
@@ -58,14 +58,14 @@
       <h2>Pinbelegung</h2>
       <table>
         <tr><th>Funktion</th><th>ESP32 Pin</th><th>Anschluss</th></tr>
-        <tr><td>Pumpe PWM / Enable</td><td>GPIO25</td><td>EN/PWM am Pumpen-Motortreiber</td></tr>
-        <tr><td>Pumpe Richtung 1</td><td>GPIO26</td><td>IN1 am Pumpen-Motortreiber</td></tr>
-        <tr><td>Pumpe Richtung 2</td><td>GPIO27</td><td>IN2 am Pumpen-Motortreiber</td></tr>
-        <tr><td>Ruehrmotor PWM / Enable</td><td>GPIO14</td><td>EN/PWM am Ruehrmotor-Motortreiber</td></tr>
-        <tr><td>Ruehrmotor Richtung 1</td><td>GPIO33</td><td>IN1 am Ruehrmotor-Motortreiber</td></tr>
-        <tr><td>Ruehrmotor Richtung 2</td><td>GPIO32</td><td>IN2 am Ruehrmotor-Motortreiber</td></tr>
+        <tr><td>Pumpe PWM / Enable</td><td>GPIO25</td><td>EN/PWM der Pumpen-H-Bruecke</td></tr>
+        <tr><td>Pumpe Richtung 1</td><td>GPIO26</td><td>IN1 der Pumpen-H-Bruecke</td></tr>
+        <tr><td>Pumpe Richtung 2</td><td>GPIO27</td><td>IN2 der Pumpen-H-Bruecke</td></tr>
+        <tr><td>Ruehrmotor PWM / Enable</td><td>GPIO14</td><td>EN/PWM der Ruehrmotor-H-Bruecke</td></tr>
+        <tr><td>Ruehrmotor Richtung 1</td><td>GPIO33</td><td>IN1 der Ruehrmotor-H-Bruecke</td></tr>
+        <tr><td>Ruehrmotor Richtung 2</td><td>GPIO32</td><td>IN2 der Ruehrmotor-H-Bruecke</td></tr>
         <tr><td>WS2812 Datenleitung</td><td>GPIO4</td><td>DIN der 8x8 Matrix</td></tr>
-        <tr><td>Masse</td><td>GND</td><td>GND von Netzteil, Treibern, LED-Matrix und ESP32 verbinden</td></tr>
+        <tr><td>Masse</td><td>GND</td><td>GND von Netzteil, H-Bruecken, LED-Matrix und ESP32 verbinden</td></tr>
       </table>
     </section>
 

@@ -1,6 +1,6 @@
 # Elitärer Ultimativer Futterautomat - bebilderte Bauanleitung
 
-Diese Anleitung beschreibt den Aufbau fuer einen ESP32-WROOM-32E mit einer vor/zurueck drehenden Peristaltikpumpe, einem DC-Ruehrmotor und einer 8x8 WS2812 LED-Matrix.
+Diese Anleitung beschreibt den Aufbau fuer einen ESP32-WROOM-32E mit zwei 2-poligen DC-Motoren, die ueber H-Bruecken angesteuert werden: eine vor/zurueck drehende Peristaltikpumpe und ein DC-Ruehrmotor. Dazu kommt eine 8x8 WS2812 LED-Matrix.
 
 ![Verdrahtung](assets/wiring.svg)
 
@@ -33,9 +33,9 @@ Viele Handys zeigen automatisch ein Anmeldefenster. Falls nicht, verbinde dich m
 ## Bauteile
 
 - ESP32-WROOM-32E Dev Board
-- Peristaltikpumpe mit DC-Motor
-- DC-Ruehrmotor
-- 2 Motortreiber-Kanaele, z. B. TB6612FNG, L298N oder DRV8833
+- Peristaltikpumpe mit 2-poligem DC-Motor
+- 2-poliger DC-Ruehrmotor
+- 2 H-Bruecken-Kanaele, z. B. TB6612FNG, L298N oder DRV8833
 - 8x8 WS2812 LED-Matrix mit 64 LEDs
 - Externes Netzteil passend zu Motoren und LED-Matrix
 - Schlaeuche fuer Fluessigfutter
@@ -48,21 +48,21 @@ Viele Handys zeigen automatisch ein Anmeldefenster. Falls nicht, verbinde dich m
 
 | Funktion | ESP32 Pin | Anschluss |
 |---|---:|---|
-| Pumpe PWM / Enable | GPIO25 | EN/PWM am Pumpen-Motortreiber |
-| Pumpe Richtung 1 | GPIO26 | IN1 am Pumpen-Motortreiber |
-| Pumpe Richtung 2 | GPIO27 | IN2 am Pumpen-Motortreiber |
-| Ruehrmotor PWM / Enable | GPIO14 | EN/PWM am Ruehrmotor-Motortreiber |
-| Ruehrmotor Richtung 1 | GPIO33 | IN1 am Ruehrmotor-Motortreiber |
-| Ruehrmotor Richtung 2 | GPIO32 | IN2 am Ruehrmotor-Motortreiber |
+| Pumpe PWM / Enable | GPIO25 | EN/PWM der Pumpen-H-Bruecke |
+| Pumpe Richtung 1 | GPIO26 | IN1 der Pumpen-H-Bruecke |
+| Pumpe Richtung 2 | GPIO27 | IN2 der Pumpen-H-Bruecke |
+| Ruehrmotor PWM / Enable | GPIO14 | EN/PWM der Ruehrmotor-H-Bruecke |
+| Ruehrmotor Richtung 1 | GPIO33 | IN1 der Ruehrmotor-H-Bruecke |
+| Ruehrmotor Richtung 2 | GPIO32 | IN2 der Ruehrmotor-H-Bruecke |
 | WS2812 Datenleitung | GPIO4 | DIN der 8x8 Matrix |
-| Masse | GND | GND von Netzteil, Treibern, LED-Matrix und ESP32 verbinden |
+| Masse | GND | GND von Netzteil, H-Bruecken, LED-Matrix und ESP32 verbinden |
 
 ## Wichtige Hinweise zur Stromversorgung
 
 Der ESP32 darf die Motoren und die LED-Matrix nicht direkt versorgen. Nutze ein externes Netzteil fuer Motoren und LEDs. Wichtig ist, dass alle GND-Leitungen verbunden sind:
 
 - GND ESP32
-- GND Motortreiber
+- GND H-Bruecken
 - GND Motor-Netzteil
 - GND LED-Matrix
 
@@ -71,12 +71,12 @@ Die WS2812-Matrix kann bei voller Helligkeit viel Strom ziehen. Eine 8x8 Matrix 
 ## Aufbau Schritt fuer Schritt
 
 1. ESP32 noch nicht mit den Motoren verbinden.
-2. Motortreiber fuer die Peristaltikpumpe anschliessen.
-3. Pumpe an den Ausgang des Motortreibers anschliessen.
-4. GPIO25, GPIO26 und GPIO27 mit dem Pumpen-Motortreiber verbinden.
-5. Motortreiber fuer den Ruehrmotor anschliessen.
-6. Ruehrmotor an den zweiten Motortreiber-Ausgang anschliessen.
-7. GPIO14, GPIO33 und GPIO32 mit dem Ruehrmotor-Motortreiber verbinden.
+2. H-Bruecke fuer die Peristaltikpumpe anschliessen.
+3. Die zwei Leitungen der Pumpe an OUT1/OUT2 der Pumpen-H-Bruecke anschliessen.
+4. GPIO25, GPIO26 und GPIO27 mit EN/PWM, IN1 und IN2 der Pumpen-H-Bruecke verbinden.
+5. H-Bruecke fuer den Ruehrmotor anschliessen.
+6. Die zwei Leitungen des Ruehrmotors an OUT1/OUT2 der Ruehrmotor-H-Bruecke anschliessen.
+7. GPIO14, GPIO33 und GPIO32 mit EN/PWM, IN1 und IN2 der Ruehrmotor-H-Bruecke verbinden.
 8. WS2812 Matrix mit 5V und GND versorgen.
 9. GPIO4 ueber optional 330-470 Ohm an DIN der Matrix anschliessen.
 10. Alle GNDs miteinander verbinden.
