@@ -95,10 +95,12 @@ pio device monitor
 | Ruehrmotor-H-Bruecke EN/PWM | GPIO14 |
 | Ruehrmotor-H-Bruecke IN1 | GPIO33 |
 | Ruehrmotor-H-Bruecke IN2 | GPIO32 |
-| WS2812 8x8 Datenleitung | GPIO4 |
+| WS2812B 8x8 DIN | GPIO4 |
+| WS2812B 8x8 5V | Externes 5V Netzteil |
+| WS2812B 8x8 GND | Gemeinsame Masse |
 | Gemeinsame Masse | GND |
 
-Die beiden Motoren sind 2-polige DC-Motoren und werden ueber H-Bruecken an OUT1/OUT2 angeschlossen. Motoren und LED-Matrix brauchen eine passende externe Stromversorgung. Alle GNDs muessen verbunden sein.
+Die beiden Motoren sind 2-polige DC-Motoren und werden ueber H-Bruecken an OUT1/OUT2 angeschlossen. Die WS2812B Matrix braucht 5V, GND und DIN; nur DIN geht an GPIO4. Motoren und LED-Matrix brauchen eine passende externe Stromversorgung. Alle GNDs muessen verbunden sein.
 
 ## Lokaler Node-Mock
 

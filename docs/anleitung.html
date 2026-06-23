@@ -48,7 +48,7 @@
         <li>Peristaltikpumpe mit 2-poligem DC-Motor</li>
         <li>2-poliger DC-Ruehrmotor</li>
         <li>2 H-Bruecken-Kanaele, z. B. TB6612FNG, L298N oder DRV8833</li>
-        <li>8x8 WS2812 LED-Matrix mit 64 LEDs</li>
+        <li>8x8 WS2812B LED-Matrix mit 64 LEDs, Anschluesse: 5V, GND, DIN</li>
         <li>Externes Netzteil passend zu Motoren und LED-Matrix</li>
         <li>Schlaeuche, Rueckschlagventil und gemeinsamer GND</li>
       </ul>
@@ -64,7 +64,9 @@
         <tr><td>Ruehrmotor PWM / Enable</td><td>GPIO14</td><td>EN/PWM der Ruehrmotor-H-Bruecke</td></tr>
         <tr><td>Ruehrmotor Richtung 1</td><td>GPIO33</td><td>IN1 der Ruehrmotor-H-Bruecke</td></tr>
         <tr><td>Ruehrmotor Richtung 2</td><td>GPIO32</td><td>IN2 der Ruehrmotor-H-Bruecke</td></tr>
-        <tr><td>WS2812 Datenleitung</td><td>GPIO4</td><td>DIN der 8x8 Matrix</td></tr>
+        <tr><td>WS2812B DIN</td><td>GPIO4</td><td>Daten-Eingang DIN der 8x8 Matrix</td></tr>
+        <tr><td>WS2812B 5V</td><td>Externes 5V Netzteil</td><td>5V/VCC der Matrix, nicht vom ESP32-3V3</td></tr>
+        <tr><td>WS2812B GND</td><td>Gemeinsame Masse</td><td>GND der Matrix mit ESP32-GND und Netzteil-GND verbinden</td></tr>
         <tr><td>Masse</td><td>GND</td><td>GND von Netzteil, H-Bruecken, LED-Matrix und ESP32 verbinden</td></tr>
       </table>
     </section>

@@ -35,11 +35,11 @@
   <text class="small" x="505" y="540">OUT1/OUT2 = Motorleitungen</text>
 
   <rect class="box" x="870" y="190" width="250" height="210" rx="14"/>
-  <text class="title" x="905" y="235">8x8 WS2812</text>
+  <text class="title" x="905" y="235">8x8 WS2812B</text>
   <text class="text" x="915" y="272">64 Pixel Matrix</text>
   <text class="small" x="915" y="302">DIN an GPIO4</text>
-  <text class="small" x="915" y="327">5V Netzteil</text>
-  <text class="small" x="915" y="352">GND gemeinsam</text>
+  <text class="small" x="915" y="327">5V/VCC an 5V Netzteil</text>
+  <text class="small" x="915" y="352">GND an gemeinsame Masse</text>
 
   <path class="wire pwm" d="M170 227 C285 227 330 205 460 205"/><text class="small" x="260" y="210">PUMP_EN</text>
   <path class="wire sig" d="M170 271 C285 271 330 245 460 245"/><text class="small" x="260" y="256">PUMP_IN1</text>
@@ -49,7 +49,7 @@
   <path class="wire sig" d="M170 421 C285 421 330 505 460 505"/><text class="small" x="260" y="452">MIX_IN1</text>
   <path class="wire sig" d="M170 465 C285 465 330 545 460 545"/><text class="small" x="260" y="496">MIX_IN2</text>
 
-  <path class="wire data" d="M170 527 C470 690 830 420 870 300"/><text class="small" x="560" y="660">LED_DATA</text>
+  <path class="wire data" d="M170 527 C470 690 830 420 870 300"/><text class="small" x="560" y="660">GPIO4 zu DIN</text>
   <path class="wire gnd" d="M310 527 C520 620 820 565 955 400"/><text class="small" x="720" y="596">GND gemeinsam</text>
 
   <rect class="box" x="50" y="620" width="1070" height="90" rx="14"/>

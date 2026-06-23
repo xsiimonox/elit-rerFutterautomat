@@ -36,7 +36,7 @@ Viele Handys zeigen automatisch ein Anmeldefenster. Falls nicht, verbinde dich m
 - Peristaltikpumpe mit 2-poligem DC-Motor
 - 2-poliger DC-Ruehrmotor
 - 2 H-Bruecken-Kanaele, z. B. TB6612FNG, L298N oder DRV8833
-- 8x8 WS2812 LED-Matrix mit 64 LEDs
+- 8x8 WS2812B LED-Matrix mit 64 LEDs, Anschluesse: 5V, GND, DIN
 - Externes Netzteil passend zu Motoren und LED-Matrix
 - Schlaeuche fuer Fluessigfutter
 - Rueckschlagventil, wenn mechanisch sinnvoll
@@ -54,7 +54,9 @@ Viele Handys zeigen automatisch ein Anmeldefenster. Falls nicht, verbinde dich m
 | Ruehrmotor PWM / Enable | GPIO14 | EN/PWM der Ruehrmotor-H-Bruecke |
 | Ruehrmotor Richtung 1 | GPIO33 | IN1 der Ruehrmotor-H-Bruecke |
 | Ruehrmotor Richtung 2 | GPIO32 | IN2 der Ruehrmotor-H-Bruecke |
-| WS2812 Datenleitung | GPIO4 | DIN der 8x8 Matrix |
+| WS2812B DIN | GPIO4 | Daten-Eingang DIN der 8x8 Matrix |
+| WS2812B 5V | Externes 5V Netzteil | 5V/VCC der Matrix, nicht vom ESP32-3V3 |
+| WS2812B GND | Gemeinsame Masse | GND der Matrix mit ESP32-GND und Netzteil-GND verbinden |
 | Masse | GND | GND von Netzteil, H-Bruecken, LED-Matrix und ESP32 verbinden |
 
 ## Wichtige Hinweise zur Stromversorgung
@@ -65,6 +67,8 @@ Der ESP32 darf die Motoren und die LED-Matrix nicht direkt versorgen. Nutze ein 
 - GND H-Bruecken
 - GND Motor-Netzteil
 - GND LED-Matrix
+- 5V Netzteil an 5V/VCC der WS2812B Matrix
+- GPIO4 an DIN der WS2812B Matrix
 
 Die WS2812-Matrix kann bei voller Helligkeit viel Strom ziehen. Eine 8x8 Matrix hat 64 LEDs. Bei Weiss und voller Helligkeit koennen theoretisch bis zu ca. 3,8 A fliessen. In diesem Projekt sollte die Helligkeit begrenzt werden.
 
@@ -77,7 +81,7 @@ Die WS2812-Matrix kann bei voller Helligkeit viel Strom ziehen. Eine 8x8 Matrix 
 5. H-Bruecke fuer den Ruehrmotor anschliessen.
 6. Die zwei Leitungen des Ruehrmotors an OUT1/OUT2 der Ruehrmotor-H-Bruecke anschliessen.
 7. GPIO14, GPIO33 und GPIO32 mit EN/PWM, IN1 und IN2 der Ruehrmotor-H-Bruecke verbinden.
-8. WS2812 Matrix mit 5V und GND versorgen.
+8. WS2812B Matrix mit externem 5V an 5V/VCC und GND versorgen.
 9. GPIO4 ueber optional 330-470 Ohm an DIN der Matrix anschliessen.
 10. Alle GNDs miteinander verbinden.
 11. ESP32 per USB flashen.
