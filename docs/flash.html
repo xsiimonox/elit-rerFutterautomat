@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Futterautomat Vita - Flash Tool</title>
+  <title>Elitärer Ultimativer Futterautomat - Flash Tool</title>
   <link rel="stylesheet" href="styles.css">
   <style>
     .doc-page{max-width:980px;margin:0 auto;padding:32px 18px}.doc-page h1{font-size:42px;text-align:left}.doc-card{margin-top:18px;padding:22px;border:1px solid var(--line);border-radius:8px;background:var(--panel)}code,pre{background:#07101b;border:1px solid var(--line);border-radius:6px}pre{padding:14px;overflow:auto}code{padding:2px 5px}.doc-page a{color:#8bd6ff}.steps li{margin:10px 0;color:var(--muted)}
@@ -12,7 +12,7 @@
 <body>
   <main class="doc-page">
     <h1>Flash Tool</h1>
-    <p>Der ESP32-Code liegt im Ordner <code>esp32/FutterautomatVita</code>. Am einfachsten flashst du lokal mit PlatformIO oder Arduino IDE.</p>
+    <p>Der ESP32-Code liegt im Ordner <code>esp32/ElitaererUltimativerFutterautomat</code>. Am einfachsten flashst du lokal mit PlatformIO oder Arduino IDE.</p>
 
     <section class="doc-card">
       <h2>Variante A: PlatformIO</h2>
@@ -20,7 +20,7 @@
         <li>ESP32 per USB anschliessen.</li>
         <li>Repository herunterladen oder klonen.</li>
         <li>Im Projektordner flashen.</li>
-        <li>Nach dem Start mit dem Hotspot <code>Futterautomat-Setup</code> verbinden.</li>
+        <li>Nach dem Start mit dem Hotspot <code>EU-Futterautomat-Setup</code> verbinden.</li>
         <li>WLAN-Daten ueber <code>http://192.168.4.1</code> eintragen.</li>
       </ol>
       <pre><code>pio run -t upload</code></pre>
@@ -33,10 +33,10 @@
         <li>Arduino IDE installieren.</li>
         <li>Boardpaket <code>esp32 by Espressif Systems</code> installieren.</li>
         <li>Bibliotheken installieren: <code>ArduinoJson</code>, <code>WebSockets</code>, <code>Adafruit NeoPixel</code>.</li>
-        <li><code>esp32/FutterautomatVita/FutterautomatVita.ino</code> oeffnen.</li>
+        <li><code>esp32/ElitaererUltimativerFutterautomat/ElitaererUltimativerFutterautomat.ino</code> oeffnen.</li>
         <li>Board <code>ESP32 Dev Module</code> auswaehlen.</li>
         <li>Port auswaehlen und Upload starten.</li>
-        <li>Nach dem Start mit dem Hotspot <code>Futterautomat-Setup</code> verbinden.</li>
+        <li>Nach dem Start mit dem Hotspot <code>EU-Futterautomat-Setup</code> verbinden.</li>
       </ol>
     </section>
 

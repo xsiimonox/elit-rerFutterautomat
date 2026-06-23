@@ -1,4 +1,4 @@
-# Futterautomat Vita - bebilderte Bauanleitung
+# Elitärer Ultimativer Futterautomat - bebilderte Bauanleitung
 
 Diese Anleitung beschreibt den Aufbau fuer einen ESP32-WROOM-32E mit einer vor/zurueck drehenden Peristaltikpumpe, einem DC-Ruehrmotor und einer 8x8 WS2812 LED-Matrix.
 
@@ -23,7 +23,7 @@ Die WLAN-Daten muessen nicht im Code eingetragen werden.
 Beim ersten Start oder wenn das gespeicherte WLAN nicht erreichbar ist, oeffnet der ESP32 diesen Setup-Hotspot:
 
 ```text
-SSID: Futterautomat-Setup
+SSID: EU-Futterautomat-Setup
 Passwort: futter1234
 Adresse: http://192.168.4.1
 ```

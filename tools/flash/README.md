@@ -27,7 +27,7 @@ WLAN-Daten werden nicht im Code eingetragen.
 Nach dem ersten Start oeffnet der ESP32 diesen Hotspot:
 
 ```text
-SSID: Futterautomat-Setup
+SSID: EU-Futterautomat-Setup
 Passwort: futter1234
 Adresse: http://192.168.4.1
 ```

@@ -5,7 +5,7 @@
     </style>
   </defs>
   <rect class="bg" width="1200" height="760"/>
-  <text class="title" x="40" y="50">Futterautomat Vita - Verdrahtung ESP32-WROOM-32E</text>
+  <text class="title" x="40" y="50">Elitaerer Ultimativer Futterautomat - Verdrahtung ESP32-WROOM-32E</text>
   <text class="small" x="40" y="78">Alle GNDs verbinden. Motoren und LED-Matrix nicht aus dem 3V3-Pin versorgen.</text>
 
   <rect class="box" x="50" y="130" width="300" height="430" rx="14"/>
@@ -55,4 +55,3 @@
   <text class="small" x="150" y="655">Pumpe, Ruehrmotor und LED-Matrix brauchen eine passende externe Versorgung. ESP32 nur Logik/PWM.</text>
   <text class="small" x="150" y="682">Bei WS2812: 330-470 Ohm in die Datenleitung und grosser Elko am 5V-Eingang der Matrix empfohlen.</text>
 </svg>
-

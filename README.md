@@ -1,6 +1,6 @@
-# Futterautomat Vita
+# Elitärer Ultimativer Futterautomat
 
-ESP32-WROOM-32E Projekt fuer einen Fluessigfutterautomaten fuer Meerwasser-Aquarien.
+ESP32-WROOM-32E Projekt fuer den Elitaeren Ultimativen Futterautomaten fuer Meerwasser-Aquarien.
 
 ## Funktionen
 
@@ -53,14 +53,14 @@ Markdown-Version:
 
 ESP32-Code:
 
-[esp32/FutterautomatVita/FutterautomatVita.ino](esp32/FutterautomatVita/FutterautomatVita.ino)
+[esp32/ElitaererUltimativerFutterautomat/ElitaererUltimativerFutterautomat.ino](esp32/ElitaererUltimativerFutterautomat/ElitaererUltimativerFutterautomat.ino)
 
-WLAN-Daten muessen nicht mehr im Code stehen. Beim ersten Start oeffnet der ESP32 den Hotspot `Futterautomat-Setup`.
+WLAN-Daten muessen nicht mehr im Code stehen. Beim ersten Start oeffnet der ESP32 den Hotspot `EU-Futterautomat-Setup`.
 
 Setup-Hotspot:
 
 ```text
-SSID: Futterautomat-Setup
+SSID: EU-Futterautomat-Setup
 Passwort: futter1234
 Adresse: http://192.168.4.1
 ```

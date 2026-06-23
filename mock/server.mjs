@@ -335,5 +335,5 @@ setInterval(() => {
 
 addLog("Mock gestartet");
 server.listen(port, () => {
-  console.log(`Futterautomat Vita Mock: http://localhost:${port}`);
+  console.log(`Elitaerer Ultimativer Futterautomat Mock: http://localhost:${port}`);
 });
