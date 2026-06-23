@@ -1,2 +1,109 @@
-# elit-rerFutterautomat
-elitärerFutterautomat
+# Futterautomat Vita
+
+ESP32-WROOM-32E Projekt fuer einen Fluessigfutterautomaten fuer Meerwasser-Aquarien.
+
+## Funktionen
+
+- Weboberflaeche im lokalen WLAN
+- Frei einstellbare Fuetterungszeiten
+- Futtermenge pro Zeitpunkt in ml
+- Einstellbare Rueckzugsmenge in ml, damit der Schlauch sauber bleibt
+- 30 Sekunden vor der Fuetterung ruehrt der DC-Motor fuer 20 Sekunden
+- Danach dosiert die Pumpe die eingestellte Menge
+- Danach zieht die Pumpe die eingestellte Rueckzugsmenge zurueck
+- 8x8 WS2812 LED-Matrix Vorschau in der Simulation
+
+## GitHub Pages Simulation
+
+Die statische Simulation liegt in `docs/` und funktioniert ohne Server.
+
+Lokal testen:
+
+```sh
+python3 -m http.server 8080 -d docs
+```
+
+Dann oeffnen:
+
+```text
+http://localhost:8080
+```
+
+Auf GitHub aktivieren:
+
+1. Repository auf GitHub oeffnen.
+2. `Settings` -> `Pages`.
+3. Source: `Deploy from a branch`.
+4. Branch: `main`.
+5. Folder: `/docs`.
+6. Speichern.
+
+## Bebilderte Bauanleitung
+
+Die Anleitung mit Pinbelegung, Ablaufgrafik und Verdrahtung liegt hier:
+
+[docs/anleitung.html](docs/anleitung.html)
+
+Markdown-Version:
+
+[docs/Bauanleitung.md](docs/Bauanleitung.md)
+
+## Flashen
+
+ESP32-Code:
+
+[esp32/FutterautomatVita/FutterautomatVita.ino](esp32/FutterautomatVita/FutterautomatVita.ino)
+
+Vor dem Flashen WLAN-Daten setzen:
+
+```cpp
+const char* WIFI_SSID = "DEIN_WLAN_NAME";
+const char* WIFI_PASSWORD = "DEIN_WLAN_PASSWORT";
+```
+
+Mit PlatformIO flashen:
+
+```sh
+tools/flash/flash_platformio.sh
+```
+
+Oder:
+
+```sh
+pio run -t upload
+```
+
+Serieller Monitor:
+
+```sh
+pio device monitor
+```
+
+## Pinbelegung kurz
+
+| Funktion | ESP32 Pin |
+|---|---:|
+| Pumpe Enable/PWM | GPIO25 |
+| Pumpe IN1 | GPIO26 |
+| Pumpe IN2 | GPIO27 |
+| Ruehrmotor Enable/PWM | GPIO14 |
+| Ruehrmotor IN1 | GPIO33 |
+| Ruehrmotor IN2 | GPIO32 |
+| WS2812 8x8 Datenleitung | GPIO4 |
+| Gemeinsame Masse | GND |
+
+Motoren und LED-Matrix brauchen eine passende externe Stromversorgung. Alle GNDs muessen verbunden sein.
+
+## Lokaler Node-Mock
+
+Zusaetzlich gibt es einen Node-Mock mit API/WebSocket:
+
+```sh
+node mock/server.mjs
+```
+
+Oeffnen:
+
+```text
+http://localhost:8080
+```
