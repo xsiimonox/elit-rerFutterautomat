@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Futterautomat Vita - Flash Tool</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .doc-page{max-width:980px;margin:0 auto;padding:32px 18px}.doc-page h1{font-size:42px;text-align:left}.doc-card{margin-top:18px;padding:22px;border:1px solid var(--line);border-radius:8px;background:var(--panel)}code,pre{background:#07101b;border:1px solid var(--line);border-radius:6px}pre{padding:14px;overflow:auto}code{padding:2px 5px}.doc-page a{color:#8bd6ff}.steps li{margin:10px 0;color:var(--muted)}
+  </style>
+</head>
+<body>
+  <main class="doc-page">
+    <h1>Flash Tool</h1>
+    <p>Der ESP32-Code liegt im Ordner <code>esp32/FutterautomatVita</code>. Am einfachsten flashst du lokal mit PlatformIO oder Arduino IDE.</p>
+
+    <section class="doc-card">
+      <h2>Variante A: PlatformIO</h2>
+      <ol class="steps">
+        <li>ESP32 per USB anschliessen.</li>
+        <li>Repository herunterladen oder klonen.</li>
+        <li>WLAN-Daten in <code>FutterautomatVita.ino</code> eintragen.</li>
+        <li>Im Projektordner flashen.</li>
+      </ol>
+      <pre><code>pio run -t upload</code></pre>
+      <p>Alternativ kannst du das Script <code>tools/flash/flash_platformio.sh</code> verwenden.</p>
+    </section>
+
+    <section class="doc-card">
+      <h2>Variante B: Arduino IDE</h2>
+      <ol class="steps">
+        <li>Arduino IDE installieren.</li>
+        <li>Boardpaket <code>esp32 by Espressif Systems</code> installieren.</li>
+        <li>Bibliotheken installieren: <code>ArduinoJson</code>, <code>WebSockets</code>, <code>Adafruit NeoPixel</code>.</li>
+        <li><code>esp32/FutterautomatVita/FutterautomatVita.ino</code> oeffnen.</li>
+        <li>Board <code>ESP32 Dev Module</code> auswaehlen.</li>
+        <li>Port auswaehlen und Upload starten.</li>
+      </ol>
+    </section>
+
+    <section class="doc-card">
+      <h2>Web-Flasher Hinweis</h2>
+      <p>Ein echter Browser-Web-Flasher braucht eine vorher kompilierte <code>.bin</code> Firmware-Datei. Sobald eine Firmware-Binary erzeugt wurde, kann sie in <code>docs/firmware/</code> abgelegt und mit ESP Web Tools verlinkt werden.</p>
+      <p>Bis dahin ist PlatformIO/Arduino IDE die zuverlaessigste Flash-Methode.</p>
+    </section>
+
+    <p><a href="index.html">Zur Simulation</a> · <a href="Bauanleitung.md">Zur Bauanleitung</a></p>
+  </main>
+</body>
+</html>

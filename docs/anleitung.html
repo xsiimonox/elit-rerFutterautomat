@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Futterautomat Vita - Bauanleitung</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .doc-page{max-width:1080px;margin:0 auto;padding:32px 18px}.doc-page h1{font-size:42px;text-align:left}.doc-card{margin-top:18px;padding:22px;border:1px solid var(--line);border-radius:8px;background:var(--panel)}.doc-img{width:100%;border:1px solid var(--line);border-radius:8px;background:#07101b}table{width:100%;border-collapse:collapse;margin-top:12px}td,th{padding:10px;border-bottom:1px solid var(--line);text-align:left;color:var(--muted)}th{color:#f3f7fb}li{margin:8px 0;color:var(--muted)}code,pre{background:#07101b;border:1px solid var(--line);border-radius:6px}code{padding:2px 5px}pre{padding:14px;overflow:auto}.doc-page a{color:#8bd6ff}
+  </style>
+</head>
+<body>
+  <main class="doc-page">
+    <h1>Futterautomat Vita - Bauanleitung</h1>
+
+    <section class="doc-card">
+      <h2>Verdrahtung</h2>
+      <img class="doc-img" src="assets/wiring.svg" alt="Verdrahtung ESP32, Motortreiber, Pumpe, Ruehrmotor und WS2812 Matrix">
+    </section>
+
+    <section class="doc-card">
+      <h2>Ablauf pro Fuetterung</h2>
+      <img class="doc-img" src="assets/flow.svg" alt="Ablauf: 30 Sekunden vorher ruehren, dosieren, zurueckziehen">
+      <ol>
+        <li>30 Sekunden vor der eingestellten Zeit startet der DC-Ruehrmotor.</li>
+        <li>Der Ruehrmotor laeuft 20 Sekunden.</li>
+        <li>Zur Fuetterungszeit dosiert die Peristaltikpumpe die eingestellte Menge.</li>
+        <li>Danach zieht die Pumpe die eingestellte Rueckzugsmenge zurueck.</li>
+      </ol>
+    </section>
+
+    <section class="doc-card">
+      <h2>Bauteile</h2>
+      <ul>
+        <li>ESP32-WROOM-32E Dev Board</li>
+        <li>Peristaltikpumpe mit DC-Motor</li>
+        <li>DC-Ruehrmotor</li>
+        <li>2 Motortreiber-Kanaele, z. B. TB6612FNG, L298N oder DRV8833</li>
+        <li>8x8 WS2812 LED-Matrix mit 64 LEDs</li>
+        <li>Externes Netzteil passend zu Motoren und LED-Matrix</li>
+        <li>Schlaeuche, Rueckschlagventil und gemeinsamer GND</li>
+      </ul>
+    </section>
+
+    <section class="doc-card">
+      <h2>Pinbelegung</h2>
+      <table>
+        <tr><th>Funktion</th><th>ESP32 Pin</th><th>Anschluss</th></tr>
+        <tr><td>Pumpe PWM / Enable</td><td>GPIO25</td><td>EN/PWM am Pumpen-Motortreiber</td></tr>
+        <tr><td>Pumpe Richtung 1</td><td>GPIO26</td><td>IN1 am Pumpen-Motortreiber</td></tr>
+        <tr><td>Pumpe Richtung 2</td><td>GPIO27</td><td>IN2 am Pumpen-Motortreiber</td></tr>
+        <tr><td>Ruehrmotor PWM / Enable</td><td>GPIO14</td><td>EN/PWM am Ruehrmotor-Motortreiber</td></tr>
+        <tr><td>Ruehrmotor Richtung 1</td><td>GPIO33</td><td>IN1 am Ruehrmotor-Motortreiber</td></tr>
+        <tr><td>Ruehrmotor Richtung 2</td><td>GPIO32</td><td>IN2 am Ruehrmotor-Motortreiber</td></tr>
+        <tr><td>WS2812 Datenleitung</td><td>GPIO4</td><td>DIN der 8x8 Matrix</td></tr>
+        <tr><td>Masse</td><td>GND</td><td>GND von Netzteil, Treibern, LED-Matrix und ESP32 verbinden</td></tr>
+      </table>
+    </section>
+
+    <section class="doc-card">
+      <h2>Kalibrierung</h2>
+      <p>Foerdere eine bekannte Zeit und miss die Menge. Danach berechnest du:</p>
+      <pre><code>mlPerSec = gemessene_ml / sekunden</code></pre>
+      <p>Beispiel: 25 ml in 10 Sekunden = 2.5 ml/s.</p>
+    </section>
+
+    <section class="doc-card">
+      <h2>GitHub Pages</h2>
+      <ol>
+        <li>Repository auf GitHub oeffnen.</li>
+        <li><code>Settings</code> -> <code>Pages</code>.</li>
+        <li>Source: <code>Deploy from a branch</code>.</li>
+        <li>Branch: <code>main</code>, Folder: <code>/docs</code>.</li>
+        <li>Speichern und die angezeigte Pages-URL oeffnen.</li>
+      </ol>
+    </section>
+
+    <p><a href="index.html">Zur Simulation</a> · <a href="flash.html">Zum Flash Tool</a> · <a href="Bauanleitung.md">Markdown-Version</a></p>
+  </main>
+</body>
+</html>

@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="420" viewBox="0 0 1200 420">
+  <defs>
+    <style>
+      .bg{fill:#07101b}.box{fill:#111c29;stroke:#6b7b91;stroke-width:2}.active{stroke:#7d3cff}.title{fill:#f3f7fb;font:700 26px Arial}.text{fill:#d7e0ea;font:18px Arial}.small{fill:#aab7c4;font:15px Arial}.arrow{fill:none;stroke:#39d8ff;stroke-width:4;marker-end:url(#m)}
+    </style>
+    <marker id="m" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#39d8ff"/>
+    </marker>
+  </defs>
+  <rect class="bg" width="1200" height="420"/>
+  <text class="title" x="40" y="52">Ablauf pro Fuetterungszeit</text>
+  <text class="small" x="40" y="82">Beispiel: Fuetterungszeit 12:30:00</text>
+
+  <rect class="box active" x="70" y="140" width="210" height="130" rx="12"/>
+  <text class="title" x="102" y="180">12:29:30</text>
+  <text class="text" x="102" y="215">Ruehrmotor AN</text>
+  <text class="small" x="102" y="245">20 Sekunden</text>
+
+  <path class="arrow" d="M290 205 H390"/>
+
+  <rect class="box" x="410" y="140" width="210" height="130" rx="12"/>
+  <text class="title" x="462" y="180">12:29:50</text>
+  <text class="text" x="462" y="215">Warten</text>
+  <text class="small" x="462" y="245">bis Dosierzeit</text>
+
+  <path class="arrow" d="M630 205 H730"/>
+
+  <rect class="box active" x="750" y="140" width="210" height="130" rx="12"/>
+  <text class="title" x="802" y="180">12:30:00</text>
+  <text class="text" x="802" y="215">Dosieren</text>
+  <text class="small" x="802" y="245">eingestellte ml</text>
+
+  <path class="arrow" d="M970 205 H1030"/>
+
+  <rect class="box active" x="1045" y="140" width="130" height="130" rx="12"/>
+  <text class="title" x="1070" y="180">danach</text>
+  <text class="text" x="1066" y="215">Rueckzug</text>
+  <text class="small" x="1066" y="245">ml sauber</text>
+</svg>
+

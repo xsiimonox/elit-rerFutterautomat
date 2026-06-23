@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760">
+  <defs>
+    <style>
+      .bg{fill:#07101b}.box{fill:#111c29;stroke:#5d6f86;stroke-width:2}.title{fill:#f3f7fb;font:700 28px Arial}.text{fill:#d7e0ea;font:18px Arial}.small{fill:#aab7c4;font:15px Arial}.pin{fill:#1a2a3b;stroke:#7d3cff;stroke-width:2}.wire{fill:none;stroke-width:5;stroke-linecap:round}.pwr{stroke:#e53e48}.gnd{stroke:#8b96a3}.sig{stroke:#38d866}.pwm{stroke:#7d3cff}.data{stroke:#39d8ff}.warn{fill:#f0bf3d;font:700 16px Arial}
+    </style>
+  </defs>
+  <rect class="bg" width="1200" height="760"/>
+  <text class="title" x="40" y="50">Futterautomat Vita - Verdrahtung ESP32-WROOM-32E</text>
+  <text class="small" x="40" y="78">Alle GNDs verbinden. Motoren und LED-Matrix nicht aus dem 3V3-Pin versorgen.</text>
+
+  <rect class="box" x="50" y="130" width="300" height="430" rx="14"/>
+  <text class="title" x="130" y="175">ESP32</text>
+  <rect class="pin" x="80" y="210" width="90" height="34" rx="5"/><text class="text" x="100" y="233">GPIO25</text>
+  <rect class="pin" x="80" y="254" width="90" height="34" rx="5"/><text class="text" x="100" y="277">GPIO26</text>
+  <rect class="pin" x="80" y="298" width="90" height="34" rx="5"/><text class="text" x="100" y="321">GPIO27</text>
+  <rect class="pin" x="80" y="360" width="90" height="34" rx="5"/><text class="text" x="100" y="383">GPIO14</text>
+  <rect class="pin" x="80" y="404" width="90" height="34" rx="5"/><text class="text" x="100" y="427">GPIO33</text>
+  <rect class="pin" x="80" y="448" width="90" height="34" rx="5"/><text class="text" x="100" y="471">GPIO32</text>
+  <rect class="pin" x="80" y="510" width="90" height="34" rx="5"/><text class="text" x="106" y="533">GPIO4</text>
+  <rect class="pin" x="220" y="510" width="90" height="34" rx="5"/><text class="text" x="248" y="533">GND</text>
+
+  <rect class="box" x="460" y="120" width="310" height="210" rx="14"/>
+  <text class="title" x="505" y="165">Motortreiber A</text>
+  <text class="text" x="505" y="202">Peristaltikpumpe</text>
+  <text class="small" x="505" y="230">IN1 = Richtung vor</text>
+  <text class="small" x="505" y="255">IN2 = Richtung zurueck</text>
+  <text class="small" x="505" y="280">EN/PWM = Geschwindigkeit</text>
+
+  <rect class="box" x="460" y="380" width="310" height="210" rx="14"/>
+  <text class="title" x="505" y="425">Motortreiber B</text>
+  <text class="text" x="505" y="462">DC Ruehrmotor</text>
+  <text class="small" x="505" y="490">IN1/IN2 = Richtung</text>
+  <text class="small" x="505" y="515">EN/PWM = Ruehrspeed</text>
+
+  <rect class="box" x="870" y="190" width="250" height="210" rx="14"/>
+  <text class="title" x="905" y="235">8x8 WS2812</text>
+  <text class="text" x="915" y="272">64 Pixel Matrix</text>
+  <text class="small" x="915" y="302">DIN an GPIO4</text>
+  <text class="small" x="915" y="327">5V Netzteil</text>
+  <text class="small" x="915" y="352">GND gemeinsam</text>
+
+  <path class="wire pwm" d="M170 227 C285 227 330 205 460 205"/><text class="small" x="260" y="210">PUMP_EN</text>
+  <path class="wire sig" d="M170 271 C285 271 330 245 460 245"/><text class="small" x="260" y="256">PUMP_IN1</text>
+  <path class="wire sig" d="M170 315 C285 315 330 285 460 285"/><text class="small" x="260" y="302">PUMP_IN2</text>
+
+  <path class="wire pwm" d="M170 377 C290 377 330 465 460 465"/><text class="small" x="260" y="410">MIX_EN</text>
+  <path class="wire sig" d="M170 421 C285 421 330 505 460 505"/><text class="small" x="260" y="452">MIX_IN1</text>
+  <path class="wire sig" d="M170 465 C285 465 330 545 460 545"/><text class="small" x="260" y="496">MIX_IN2</text>
+
+  <path class="wire data" d="M170 527 C470 690 830 420 870 300"/><text class="small" x="560" y="660">LED_DATA</text>
+  <path class="wire gnd" d="M310 527 C520 620 820 565 955 400"/><text class="small" x="720" y="596">GND gemeinsam</text>
+
+  <rect class="box" x="50" y="620" width="1070" height="90" rx="14"/>
+  <text class="warn" x="80" y="655">Wichtig:</text>
+  <text class="small" x="150" y="655">Pumpe, Ruehrmotor und LED-Matrix brauchen eine passende externe Versorgung. ESP32 nur Logik/PWM.</text>
+  <text class="small" x="150" y="682">Bei WS2812: 330-470 Ohm in die Datenleitung und grosser Elko am 5V-Eingang der Matrix empfohlen.</text>
+</svg>
+

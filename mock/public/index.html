@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Futterautomat Vita</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-mark">~</div>
+      <span>FUTTERAUTOMAT</span>
+    </div>
+    <nav>
+      <a class="nav-item link-item active" href="#dashboard">⌂ Dashboard</a>
+      <a class="nav-item link-item" href="#dosierplan">▣ Dosierplan</a>
+      <a class="nav-item link-item" href="#kalibrierung">⚙ Kalibrierung</a>
+      <a class="nav-item link-item" href="#led-einstellungen">☼ Einstellungen</a>
+      <a class="nav-item link-item" href="#system">◎ System</a>
+      <a class="nav-item link-item" href="#live-log">☷ Log / Historie</a>
+      <a class="nav-item link-item" href="#dashboard">ⓘ Ueber</a>
+    </nav>
+    <div class="device-card">
+      <strong><span class="dot green"></span> Online</strong>
+      <p>Futterautomat</p>
+      <p>IP: <span id="ip">localhost</span></p>
+      <p>Firmware: <span id="firmware">1.0.0</span></p>
+    </div>
+  </aside>
+
+  <main class="shell">
+    <section class="hero">
+      <div></div>
+      <h1>DER ELITÄRE<br>FUTTERAUTOMAT</h1>
+      <div class="time-card">
+        <strong id="clock">--:--:--</strong>
+        <span id="date">--</span>
+      </div>
+      <a class="settings-btn" href="#led-einstellungen">⚙ Einstellungen</a>
+    </section>
+
+    <section class="dashboard" id="dashboard">
+      <div class="main-column">
+        <section class="top-grid">
+          <article class="panel compact">
+            <label class="field-title">Rueckzug nach Dosierung <span class="info">i</span></label>
+            <div class="input-unit">
+              <input id="tubeML" type="number" min="0" step="0.1">
+              <span>ml</span>
+            </div>
+            <p class="hint">Diese ml zieht die Pumpe nach jeder Fuetterung zurueck, damit der Schlauch sauber bleibt.</p>
+          </article>
+
+          <article class="panel days-panel">
+            <div class="days" id="days"></div>
+          </article>
+        </section>
+
+        <article class="panel plan-panel" id="dosierplan">
+          <h2>Zeitpunkte der Dosierung</h2>
+          <p class="plan-note">30 Sekunden vor jeder Zeit ruehrt der DC Motor 20 Sekunden. Zur eingestellten Zeit wird dosiert, danach wird die Rueckzugsmenge eingezogen.</p>
+          <div class="plan-table">
+            <div class="plan-head">
+              <span>Zeitpunkt</span>
+              <span>Futtermenge (ml)</span>
+              <span>Aktionen</span>
+            </div>
+            <div id="jobs"></div>
+            <button class="add-slot" id="addJobBtn">+</button>
+          </div>
+        </article>
+
+        <section class="bottom-grid">
+          <article class="panel calibrate" id="kalibrierung">
+            <h2><span class="purple-icon">⚙</span> PUMPE KALIBRIEREN</h2>
+            <label class="range-label">Ruehrergeschwindigkeit (%) <span class="info">i</span></label>
+            <div class="range-row">
+              <input id="mixerSpeed" type="range" min="0" max="100" step="1">
+              <input class="small-number" id="mixerSpeedNumber" type="number" min="0" max="100" step="1">
+              <span>%</span>
+            </div>
+            <p>Kalibriermenge auswaehlen</p>
+            <div class="cal-buttons">
+              <button data-cal="10">10 ml <small>10 Sekunden</small></button>
+              <button data-cal="25">25 ml <small>25 Sekunden</small></button>
+              <button data-cal="50">50 ml <small>50 Sekunden</small></button>
+            </div>
+          </article>
+
+          <article class="panel led-panel" id="led-einstellungen">
+            <h2><span class="purple-icon">●</span> LED EINSTELLUNGEN</h2>
+            <div class="led-grid">
+              <div>
+                <label>Farbe</label>
+                <input id="ledColor" class="color-strip" type="color">
+                <label>Helligkeit</label>
+                <div class="range-row">
+                  <input id="ledBrightness" type="range" min="0" max="100">
+                  <input class="small-number" id="ledBrightnessNumber" type="number" min="0" max="100">
+                  <span>%</span>
+                </div>
+                <label>Effekt</label>
+                <select id="ledEffect">
+                  <option>Pulsieren</option>
+                  <option>Dauerlicht</option>
+                  <option>Atmen</option>
+                  <option>Statusfarben</option>
+                </select>
+              </div>
+              <div class="preview">
+                <span>Vorschau</span>
+                <div class="led-matrix" id="ledMatrix"></div>
+              </div>
+            </div>
+          </article>
+        </section>
+      </div>
+
+      <aside class="right-column">
+        <article class="panel status-panel" id="system">
+          <h2><span class="dot green"></span> System Status</h2>
+          <strong id="status">Bereit</strong>
+          <div class="status-ring"><span>✓</span></div>
+          <div class="stat-row"><span>Betriebszeit</span><strong id="uptime">2d 14h 32m</strong></div>
+          <div class="stat-row"><span>Letzte Dosierung</span><strong id="lastDose">Heute, 12:30</strong></div>
+          <div class="stat-row"><span>Naechste Dosierung</span><strong id="nextDose">Heute, 18:45</strong></div>
+          <div class="stat-row"><span>WiFi Signal</span><strong class="wifi">≋ -42 dBm</strong></div>
+        </article>
+
+        <article class="panel log-panel" id="live-log">
+          <h2>Live Log</h2>
+          <div class="log" id="log"></div>
+          <button class="clear-log" id="clearLogBtn">▢ Log loeschen</button>
+          <div class="legend">
+            <span><i class="red"></i> Ruehren</span>
+            <span><i class="green-bg"></i> Dosieren</span>
+            <span><i class="blue"></i> Rueckzug</span>
+            <span><i class="yellow"></i> Bereit</span>
+          </div>
+        </article>
+      </aside>
+    </section>
+
+    <footer>Futterautomat Industrial System <span>♡</span> Version 1.0.0</footer>
+  </main>
+
+  <script src="/app.js"></script>
+</body>
+</html>
