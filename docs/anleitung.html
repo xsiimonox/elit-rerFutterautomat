@@ -30,6 +30,18 @@
     </section>
 
     <section class="doc-card">
+      <h2>WLAN Setup</h2>
+      <p>Die WLAN-Daten muessen nicht im Code eingetragen werden. Beim ersten Start oder wenn das Haus-WLAN nicht erreichbar ist, oeffnet der ESP32 einen eigenen Setup-Hotspot.</p>
+      <table>
+        <tr><th>Setup-WLAN</th><th>Wert</th></tr>
+        <tr><td>SSID</td><td>Futterautomat-Setup</td></tr>
+        <tr><td>Passwort</td><td>futter1234</td></tr>
+        <tr><td>Adresse</td><td>http://192.168.4.1</td></tr>
+      </table>
+      <p>Viele Handys zeigen automatisch ein Anmeldefenster. Falls nicht, verbinde dich mit dem Hotspot und oeffne die Adresse manuell. Nach erfolgreicher Verbindung schliesst der ESP32 den Hotspot.</p>
+    </section>
+
+    <section class="doc-card">
       <h2>Bauteile</h2>
       <ul>
         <li>ESP32-WROOM-32E Dev Board</li>

@@ -12,6 +12,7 @@ ESP32-WROOM-32E Projekt fuer einen Fluessigfutterautomaten fuer Meerwasser-Aquar
 - Danach dosiert die Pumpe die eingestellte Menge
 - Danach zieht die Pumpe die eingestellte Rueckzugsmenge zurueck
 - 8x8 WS2812 LED-Matrix Vorschau in der Simulation
+- WLAN-Setup per eigenem Hotspot/Captive Portal, keine WLAN-Daten im Code noetig
 
 ## GitHub Pages Simulation
 
@@ -54,12 +55,17 @@ ESP32-Code:
 
 [esp32/FutterautomatVita/FutterautomatVita.ino](esp32/FutterautomatVita/FutterautomatVita.ino)
 
-Vor dem Flashen WLAN-Daten setzen:
+WLAN-Daten muessen nicht mehr im Code stehen. Beim ersten Start oeffnet der ESP32 den Hotspot `Futterautomat-Setup`.
 
-```cpp
-const char* WIFI_SSID = "DEIN_WLAN_NAME";
-const char* WIFI_PASSWORD = "DEIN_WLAN_PASSWORT";
+Setup-Hotspot:
+
+```text
+SSID: Futterautomat-Setup
+Passwort: futter1234
+Adresse: http://192.168.4.1
 ```
+
+Nach erfolgreicher Verbindung mit dem Haus-WLAN schliesst der ESP32 den Setup-Hotspot. Wenn das Haus-WLAN verloren geht, oeffnet er den Setup-Hotspot wieder.
 
 Mit PlatformIO flashen:
 

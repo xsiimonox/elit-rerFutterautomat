@@ -1,17 +1,15 @@
 #include <WiFi.h>
 #include <WebServer.h>
 #include <WebSocketsServer.h>
+#include <DNSServer.h>
 #include <Preferences.h>
 #include <ArduinoJson.h>
 #include <Adafruit_NeoPixel.h>
 #include <time.h>
 
-// Set these before flashing.
-const char* WIFI_SSID = "DEIN_WLAN_NAME";
-const char* WIFI_PASSWORD = "DEIN_WLAN_PASSWORT";
-
 WebServer server(80);
 WebSocketsServer ws(81);
+DNSServer dnsServer;
 Preferences prefs;
 
 constexpr uint8_t PUMP_IN1 = 26;
@@ -35,6 +33,15 @@ constexpr uint8_t PWM_BITS = 8;
 constexpr uint8_t MAX_JOBS = 20;
 constexpr unsigned long MIX_BEFORE_MS = 30000;
 constexpr unsigned long MIX_MS = 20000;
+constexpr byte DNS_PORT = 53;
+const char* SETUP_AP_SSID = "Futterautomat-Setup";
+const char* SETUP_AP_PASSWORD = "futter1234";
+IPAddress setupApIP(192, 168, 4, 1);
+String wifiSsid = "";
+String wifiPassword = "";
+bool setupPortalActive = false;
+bool timeConfigured = false;
+unsigned long lastWiFiCheck = 0;
 
 enum State { IDLE, MIXING, WAITING, DOSING, BACKFLOW };
 State state = IDLE;
@@ -100,6 +107,36 @@ async function stopDose(){await api("/api/stop",{})}
 function connect(){ws=new WebSocket(`ws://${location.hostname}:81`);ws.onmessage=e=>{const d=JSON.parse(e.data);render(d);log(d.status)};ws.onclose=()=>setTimeout(connect,1000)}
 fetch("/api/state").then(r=>r.json()).then(render);connect();
 </script>
+</body>
+</html>
+)rawliteral";
+
+const char wifi_setup_html[] PROGMEM = R"rawliteral(
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Futterautomat WLAN Setup</title>
+<style>
+body{margin:0;min-height:100vh;display:grid;place-items:center;background:radial-gradient(circle at top,#14263a,#050b14 62%);color:#f3f7fb;font-family:Arial,Helvetica,sans-serif}
+.card{width:min(440px,calc(100% - 28px));padding:28px;border:1px solid rgba(125,60,255,.45);border-radius:14px;background:rgba(12,23,35,.92);box-shadow:0 24px 80px rgba(0,0,0,.35)}
+h1{margin:0;font-size:30px;line-height:1.05;background:linear-gradient(90deg,#ffae29,#ff4cf3,#39d8ff);-webkit-background-clip:text;color:transparent}
+p{color:#aab7c4;line-height:1.45}label{display:grid;gap:7px;margin-top:16px;color:#d7e0ea}
+input{min-height:44px;border:1px solid rgba(111,136,165,.35);border-radius:8px;background:#07101b;color:#f3f7fb;padding:8px 12px;font-size:16px}
+button{width:100%;min-height:48px;margin-top:22px;border:0;border-radius:8px;background:linear-gradient(135deg,#7041e8,#3c149b);color:white;font-size:16px;font-weight:700}
+.hint{font-size:13px}.status{margin-top:16px;padding:12px;border-radius:8px;background:#07101b;color:#38d866}
+</style>
+</head>
+<body>
+<form class="card" method="post" action="/wifi-save">
+<h1>Futterautomat<br>WLAN Setup</h1>
+<p>Verbinde den Futterautomaten mit deinem Haus-WLAN. Danach schaltet der ESP den Setup-Hotspot automatisch ab.</p>
+<label>WLAN Name<input name="ssid" autocomplete="off" required placeholder="Mein WLAN"></label>
+<label>WLAN Passwort<input name="password" type="password" autocomplete="current-password" placeholder="Passwort"></label>
+<button type="submit">Verbinden</button>
+<p class="hint">Setup-Hotspot: Futterautomat-Setup · Passwort: futter1234 · Adresse: 192.168.4.1</p>
+</form>
 </body>
 </html>
 )rawliteral";
@@ -400,17 +437,103 @@ void handleStop() {
   server.send(200, "application/json", "{\"ok\":true}");
 }
 
-void connectWiFi() {
-  WiFi.mode(WIFI_STA);
-  WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
-  Serial.print("Verbinde WLAN");
-  while (WiFi.status() != WL_CONNECTED) {
-    delay(500);
+bool connectWiFi(unsigned long timeoutMs = 12000) {
+  if (wifiSsid.length() == 0) return false;
+
+  WiFi.mode(setupPortalActive ? WIFI_AP_STA : WIFI_STA);
+  WiFi.begin(wifiSsid.c_str(), wifiPassword.c_str());
+  Serial.print("Verbinde WLAN: ");
+  Serial.println(wifiSsid);
+
+  unsigned long start = millis();
+  while (WiFi.status() != WL_CONNECTED && millis() - start < timeoutMs) {
+    delay(250);
     Serial.print(".");
   }
   Serial.println();
+
+  if (WiFi.status() == WL_CONNECTED) {
+    Serial.print("Verbunden, IP: ");
+    Serial.println(WiFi.localIP());
+    if (!timeConfigured) {
+      configTime(3600, 3600, "pool.ntp.org", "time.nist.gov");
+      timeConfigured = true;
+    }
+    return true;
+  }
+
+  Serial.println("WLAN Verbindung fehlgeschlagen.");
+  return false;
+}
+
+void stopSetupPortal() {
+  if (!setupPortalActive) return;
+  dnsServer.stop();
+  WiFi.softAPdisconnect(true);
+  setupPortalActive = false;
+  if (WiFi.status() == WL_CONNECTED) WiFi.mode(WIFI_STA);
+  Serial.println("Setup-Hotspot geschlossen.");
+}
+
+void startSetupPortal() {
+  if (setupPortalActive) return;
+  WiFi.mode(WIFI_AP_STA);
+  WiFi.softAPConfig(setupApIP, setupApIP, IPAddress(255, 255, 255, 0));
+  WiFi.softAP(SETUP_AP_SSID, SETUP_AP_PASSWORD);
+  dnsServer.start(DNS_PORT, "*", setupApIP);
+  setupPortalActive = true;
+  Serial.println("Setup-Hotspot aktiv.");
+  Serial.print("SSID: ");
+  Serial.println(SETUP_AP_SSID);
   Serial.print("IP: ");
-  Serial.println(WiFi.localIP());
+  Serial.println(setupApIP);
+}
+
+void handleRoot() {
+  if (WiFi.status() == WL_CONNECTED) {
+    server.send_P(200, "text/html", index_html);
+  } else {
+    server.send_P(200, "text/html", wifi_setup_html);
+  }
+}
+
+void handleWifiSave() {
+  String ssid = server.arg("ssid");
+  String password = server.arg("password");
+  ssid.trim();
+
+  if (ssid.length() == 0) {
+    server.send(400, "text/html", "<h1>WLAN Name fehlt</h1><p><a href='/'>Zurueck</a></p>");
+    return;
+  }
+
+  wifiSsid = ssid;
+  wifiPassword = password;
+  prefs.putString("wifiSsid", wifiSsid);
+  prefs.putString("wifiPass", wifiPassword);
+
+  server.send(200, "text/html", "<!doctype html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'><style>body{font-family:Arial;background:#07101b;color:white;display:grid;place-items:center;min-height:100vh}.card{max-width:420px;padding:24px;border:1px solid #7d3cff;border-radius:12px;background:#111c29}p{color:#aab7c4}</style></head><body><div class='card'><h1>WLAN wird verbunden...</h1><p>Wenn alles passt, verschwindet der Setup-Hotspot gleich. Oeffne danach die IP aus dem seriellen Monitor oder schaue im Router nach.</p></div></body></html>");
+  delay(600);
+  if (connectWiFi(15000)) stopSetupPortal();
+  else startSetupPortal();
+}
+
+void handleCaptivePortal() {
+  server.sendHeader("Location", String("http://") + setupApIP.toString(), true);
+  server.send(302, "text/plain", "");
+}
+
+void monitorWiFi() {
+  if (millis() - lastWiFiCheck < 5000) return;
+  lastWiFiCheck = millis();
+
+  if (WiFi.status() == WL_CONNECTED) {
+    if (setupPortalActive) stopSetupPortal();
+    return;
+  }
+
+  if (wifiSsid.length() > 0) connectWiFi(2500);
+  if (WiFi.status() != WL_CONNECTED) startSetupPortal();
 }
 
 void setup() {
@@ -437,17 +560,25 @@ void setup() {
   maxDoseML = prefs.getFloat("maxDoseML", maxDoseML);
   mixerSpeed = prefs.getUChar("mixer", mixerSpeed);
   ledBrightness = prefs.getUChar("led", ledBrightness);
+  wifiSsid = prefs.getString("wifiSsid", "");
+  wifiPassword = prefs.getString("wifiPass", "");
   loadJobs();
 
-  connectWiFi();
-  configTime(3600, 3600, "pool.ntp.org", "time.nist.gov");
+  if (!connectWiFi()) startSetupPortal();
 
-  server.on("/", []() { server.send_P(200, "text/html", index_html); });
+  server.on("/", HTTP_GET, handleRoot);
+  server.on("/wifi-save", HTTP_POST, handleWifiSave);
+  server.on("/generate_204", HTTP_GET, handleCaptivePortal);
+  server.on("/gen_204", HTTP_GET, handleCaptivePortal);
+  server.on("/hotspot-detect.html", HTTP_GET, handleCaptivePortal);
+  server.on("/connecttest.txt", HTTP_GET, handleCaptivePortal);
+  server.on("/ncsi.txt", HTTP_GET, handleCaptivePortal);
   server.on("/api/state", HTTP_GET, handleState);
   server.on("/api/job", HTTP_POST, handleAddJob);
   server.on("/api/job/delete", HTTP_POST, handleDeleteJob);
   server.on("/api/dose", HTTP_POST, handleDose);
   server.on("/api/stop", HTTP_POST, handleStop);
+  server.onNotFound(handleRoot);
   server.begin();
 
   ws.begin();
@@ -457,6 +588,8 @@ void setup() {
 }
 
 void loop() {
+  if (setupPortalActive) dnsServer.processNextRequest();
+  monitorWiFi();
   server.handleClient();
   ws.loop();
   updateMachine();

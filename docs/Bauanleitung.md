@@ -16,6 +16,20 @@ Pro Fuetterungszeit passiert automatisch:
 4. Die Peristaltikpumpe dosiert die eingestellte Futtermenge.
 5. Danach dreht die Pumpe rueckwaerts und zieht die eingestellte Rueckzugsmenge ein.
 
+## WLAN Setup
+
+Die WLAN-Daten muessen nicht im Code eingetragen werden.
+
+Beim ersten Start oder wenn das gespeicherte WLAN nicht erreichbar ist, oeffnet der ESP32 diesen Setup-Hotspot:
+
+```text
+SSID: Futterautomat-Setup
+Passwort: futter1234
+Adresse: http://192.168.4.1
+```
+
+Viele Handys zeigen automatisch ein Anmeldefenster. Falls nicht, verbinde dich mit dem Hotspot und oeffne `http://192.168.4.1` im Browser. Dort kannst du WLAN-Name und Passwort eintragen. Nach erfolgreicher Verbindung schliesst der ESP32 den Hotspot und ist im Haus-WLAN ueber seine Router-IP erreichbar.
+
 ## Bauteile
 
 - ESP32-WROOM-32E Dev Board
@@ -112,4 +126,3 @@ Danach ist die Simulation unter einer Adresse wie dieser erreichbar:
 ```text
 https://DEINNAME.github.io/REPOSITORY-NAME/
 ```
-

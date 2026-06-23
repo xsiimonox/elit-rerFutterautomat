@@ -20,14 +20,16 @@ Seriellen Monitor oeffnen:
 pio device monitor
 ```
 
-## Vor dem Flashen
+## WLAN nach dem Flashen
 
-In `esp32/FutterautomatVita/FutterautomatVita.ino` eintragen:
+WLAN-Daten werden nicht im Code eingetragen.
 
-```cpp
-const char* WIFI_SSID = "DEIN_WLAN_NAME";
-const char* WIFI_PASSWORD = "DEIN_WLAN_PASSWORT";
+Nach dem ersten Start oeffnet der ESP32 diesen Hotspot:
+
+```text
+SSID: Futterautomat-Setup
+Passwort: futter1234
+Adresse: http://192.168.4.1
 ```
 
-Nach dem Start gibt der ESP32 seine IP im seriellen Monitor aus. Diese IP im Browser aufrufen, wenn dein Rechner im gleichen Netzwerk ist.
-
+Verbinde dich damit und trage im Setup-Fenster dein Haus-WLAN ein. Nach erfolgreicher Verbindung gibt der ESP32 seine IP im seriellen Monitor aus. Diese IP im Browser aufrufen, wenn dein Rechner im gleichen Netzwerk ist.
