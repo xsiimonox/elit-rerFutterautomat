@@ -33,3 +33,19 @@ Adresse: http://192.168.4.1
 ```
 
 Verbinde dich damit und trage im Setup-Fenster dein Haus-WLAN ein. Nach erfolgreicher Verbindung gibt der ESP32 seine IP im seriellen Monitor aus. Diese IP im Browser aufrufen, wenn dein Rechner im gleichen Netzwerk ist.
+
+## OTA Update
+
+Nach dem ersten USB-Flash kannst du neue Firmware ueber das Webinterface hochladen:
+
+```text
+http://ESP-IP/update
+```
+
+PlatformIO Firmware-Datei:
+
+```text
+.pio/build/esp32dev/firmware.bin
+```
+
+Diese Datei kannst du auf dein Handy kopieren und dort im Update-Formular auswaehlen.

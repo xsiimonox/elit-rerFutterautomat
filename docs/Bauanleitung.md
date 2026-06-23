@@ -130,3 +130,15 @@ Danach ist die Simulation unter einer Adresse wie dieser erreichbar:
 ```text
 https://DEINNAME.github.io/REPOSITORY-NAME/
 ```
+
+## OTA Update
+
+Nach dem ersten Flash per USB kann der Futterautomat ueber WLAN aktualisiert werden.
+
+1. Firmware als `.bin` bauen.
+2. Datei auf das Handy kopieren.
+3. Handy ins gleiche WLAN wie der ESP32 bringen.
+4. Im Browser `http://ESP-IP/update` oeffnen.
+5. `.bin` Datei auswaehlen und hochladen.
+
+Waehrend des Updates stoppt der ESP32 die Motoren. Danach startet er automatisch neu.

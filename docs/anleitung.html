@@ -89,6 +89,18 @@
       </ol>
     </section>
 
+    <section class="doc-card">
+      <h2>OTA Update vom Handy</h2>
+      <ol>
+        <li>Firmware als <code>.bin</code> bauen.</li>
+        <li>Datei auf das Handy kopieren.</li>
+        <li>Handy ins gleiche WLAN wie der ESP32 bringen.</li>
+        <li><code>http://ESP-IP/update</code> oeffnen.</li>
+        <li><code>.bin</code> Datei auswaehlen und hochladen.</li>
+      </ol>
+      <p>Der ESP32 stoppt vor dem Update die Motoren und startet nach erfolgreichem Upload automatisch neu.</p>
+    </section>
+
     <p><a href="index.html">Zur Simulation</a> · <a href="flash.html">Zum Flash Tool</a> · <a href="Bauanleitung.md">Markdown-Version</a></p>
   </main>
 </body>

@@ -5,6 +5,7 @@
 #include <Preferences.h>
 #include <ArduinoJson.h>
 #include <Adafruit_NeoPixel.h>
+#include <Update.h>
 #include <time.h>
 
 WebServer server(80);
@@ -41,6 +42,7 @@ String wifiSsid = "";
 String wifiPassword = "";
 bool setupPortalActive = false;
 bool timeConfigured = false;
+bool otaUpdateOk = false;
 unsigned long lastWiFiCheck = 0;
 
 enum State { IDLE, MIXING, WAITING, DOSING, BACKFLOW };
@@ -92,6 +94,7 @@ button{min-height:38px;border:0;border-radius:6px;background:#28c7b7;color:#0613
 <div class="panel"><h2>Manuell</h2><div class="row"><label>Menge ml<input id="manualMl" type="number" value="2.5" step="0.1"></label><button onclick="dose()">Start</button><button class="danger" onclick="stopDose()">Stop</button></div></div>
 <div class="panel"><h2>Job</h2><div class="row"><label>Zeit<input id="time" type="time"></label><label>Menge ml<input id="ml" type="number" value="2.5" step="0.1"></label><button onclick="addJob()">Hinzufuegen</button></div></div>
 <div class="panel"><h2>Jobs</h2><div class="jobs" id="jobs"></div></div>
+<div class="panel"><h2>System</h2><p>Firmware drahtlos aktualisieren.</p><p><a style="color:#28c7b7" href="/update">OTA Update oeffnen</a></p></div>
 <div class="panel"><h2>Log</h2><div class="log" id="log"></div></div>
 </section>
 </main>
@@ -107,6 +110,35 @@ async function stopDose(){await api("/api/stop",{})}
 function connect(){ws=new WebSocket(`ws://${location.hostname}:81`);ws.onmessage=e=>{const d=JSON.parse(e.data);render(d);log(d.status)};ws.onclose=()=>setTimeout(connect,1000)}
 fetch("/api/state").then(r=>r.json()).then(render);connect();
 </script>
+</body>
+</html>
+)rawliteral";
+
+const char ota_update_html[] PROGMEM = R"rawliteral(
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OTA Update</title>
+<style>
+body{margin:0;min-height:100vh;display:grid;place-items:center;background:radial-gradient(circle at top,#14263a,#050b14 62%);color:#f3f7fb;font-family:Arial,Helvetica,sans-serif}
+.card{width:min(460px,calc(100% - 28px));padding:28px;border:1px solid rgba(125,60,255,.45);border-radius:14px;background:rgba(12,23,35,.94);box-shadow:0 24px 80px rgba(0,0,0,.35)}
+h1{margin:0;font-size:32px;line-height:1.05;background:linear-gradient(90deg,#ffae29,#ff4cf3,#39d8ff);-webkit-background-clip:text;color:transparent}
+p{color:#aab7c4;line-height:1.45}input{width:100%;min-height:46px;margin-top:14px;color:#f3f7fb}
+button{width:100%;min-height:48px;margin-top:18px;border:0;border-radius:8px;background:linear-gradient(135deg,#7041e8,#3c149b);color:white;font-size:16px;font-weight:700}
+.warn{padding:12px;border-radius:8px;background:#2a1c10;color:#f0bf3d}.link{color:#8bd6ff}
+</style>
+</head>
+<body>
+<form class="card" method="post" action="/update" enctype="multipart/form-data">
+<h1>Firmware OTA Update</h1>
+<p>Waehle eine kompilierte <strong>.bin</strong> Firmwaredatei von deinem Handy aus. Der Futterautomat startet nach erfolgreichem Update automatisch neu.</p>
+<p class="warn">Waehrend des Updates nicht ausschalten. Motoren werden vor dem Update gestoppt.</p>
+<input type="file" name="firmware" accept=".bin,application/octet-stream" required>
+<button type="submit">Update hochladen</button>
+<p><a class="link" href="/">Zurueck</a></p>
+</form>
 </body>
 </html>
 )rawliteral";
@@ -437,6 +469,57 @@ void handleStop() {
   server.send(200, "application/json", "{\"ok\":true}");
 }
 
+void handleUpdatePage() {
+  server.send_P(200, "text/html", ota_update_html);
+}
+
+void handleUpdateFinished() {
+  bool ok = otaUpdateOk && !Update.hasError();
+  String page = "<!doctype html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'>";
+  page += "<style>body{font-family:Arial;background:#07101b;color:white;display:grid;place-items:center;min-height:100vh}.card{max-width:440px;padding:24px;border:1px solid #7d3cff;border-radius:12px;background:#111c29}p{color:#aab7c4}a{color:#8bd6ff}</style></head><body><div class='card'>";
+  if (ok) {
+    page += "<h1>Update erfolgreich</h1><p>Der Futterautomat startet jetzt neu. Bitte warte etwa 20 Sekunden und oeffne die IP dann erneut.</p>";
+  } else {
+    page += "<h1>Update fehlgeschlagen</h1><p>Bitte pruefe, ob die Datei eine passende ESP32-Firmware im .bin Format ist.</p><p><a href='/update'>Erneut versuchen</a></p>";
+  }
+  page += "</div></body></html>";
+  server.send(ok ? 200 : 500, "text/html", page);
+  delay(700);
+  otaUpdateOk = false;
+  if (ok) ESP.restart();
+}
+
+void handleUpdateUpload() {
+  HTTPUpload& upload = server.upload();
+
+  if (upload.status == UPLOAD_FILE_START) {
+    otaUpdateOk = false;
+    pumpStop();
+    mixerStop();
+    state = IDLE;
+    Serial.print("OTA Update Start: ");
+    Serial.println(upload.filename);
+    if (!Update.begin(UPDATE_SIZE_UNKNOWN)) {
+      Update.printError(Serial);
+    }
+  } else if (upload.status == UPLOAD_FILE_WRITE) {
+    if (Update.write(upload.buf, upload.currentSize) != upload.currentSize) {
+      Update.printError(Serial);
+    }
+  } else if (upload.status == UPLOAD_FILE_END) {
+    if (Update.end(true)) {
+      otaUpdateOk = true;
+      Serial.print("OTA Update fertig, Bytes: ");
+      Serial.println(upload.totalSize);
+    } else {
+      Update.printError(Serial);
+    }
+  } else if (upload.status == UPLOAD_FILE_ABORTED) {
+    Update.abort();
+    Serial.println("OTA Update abgebrochen.");
+  }
+}
+
 bool connectWiFi(unsigned long timeoutMs = 12000) {
   if (wifiSsid.length() == 0) return false;
 
@@ -578,6 +661,8 @@ void setup() {
   server.on("/api/job/delete", HTTP_POST, handleDeleteJob);
   server.on("/api/dose", HTTP_POST, handleDose);
   server.on("/api/stop", HTTP_POST, handleStop);
+  server.on("/update", HTTP_GET, handleUpdatePage);
+  server.on("/update", HTTP_POST, handleUpdateFinished, handleUpdateUpload);
   server.onNotFound(handleRoot);
   server.begin();
 

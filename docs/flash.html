@@ -46,6 +46,21 @@
       <p>Bis dahin ist PlatformIO/Arduino IDE die zuverlaessigste Flash-Methode.</p>
     </section>
 
+    <section class="doc-card">
+      <h2>OTA Update vom Handy</h2>
+      <p>Nach dem ersten USB-Flash kannst du Updates direkt ueber die Weboberflaeche einspielen.</p>
+      <ol class="steps">
+        <li>Neue Firmware als <code>.bin</code> bauen.</li>
+        <li>Die <code>.bin</code> Datei auf dein Handy kopieren.</li>
+        <li>Handy mit dem gleichen WLAN wie der Futterautomat verbinden.</li>
+        <li><code>http://ESP-IP/update</code> im Browser oeffnen.</li>
+        <li>Datei auswaehlen und hochladen.</li>
+      </ol>
+      <p>PlatformIO legt die Datei normalerweise hier ab:</p>
+      <pre><code>.pio/build/esp32dev/firmware.bin</code></pre>
+      <p>Arduino IDE: <code>Sketch</code> -> <code>Export Compiled Binary</code>. Danach liegt die <code>.bin</code> im Sketch-Ordner.</p>
+    </section>
+
     <p><a href="index.html">Zur Simulation</a> · <a href="Bauanleitung.md">Zur Bauanleitung</a></p>
   </main>
 </body>

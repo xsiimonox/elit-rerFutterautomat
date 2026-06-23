@@ -85,6 +85,29 @@ Serieller Monitor:
 pio device monitor
 ```
 
+## OTA Update vom Handy
+
+Nach dem ersten USB-Flash kannst du neue Firmware drahtlos einspielen:
+
+1. Neue Firmware als `.bin` bauen.
+2. `.bin` Datei auf dein Handy kopieren.
+3. Handy ins gleiche WLAN wie der Futterautomat.
+4. Im Browser oeffnen:
+
+```text
+http://ESP-IP/update
+```
+
+5. `.bin` Datei auswaehlen und hochladen.
+
+Der ESP stoppt vor dem Update die Motoren, schreibt die Firmware und startet danach neu.
+
+PlatformIO erzeugt die Datei hier:
+
+```text
+.pio/build/esp32dev/firmware.bin
+```
+
 ## Pinbelegung kurz
 
 | Funktion | ESP32 Pin |
